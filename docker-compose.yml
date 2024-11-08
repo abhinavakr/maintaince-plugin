@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.5
+    command:
+      - --configFile=/traefik.yml
+      - --providers.file.filename=/dynamic-config.yml
+    ports:
+      - "8080:80"
+    volumes:
+      - ./traefik.yml:/traefik.yml
+      - ./dynamic-config.yml:/dynamic-config.yml
+      - ./maintenance:/maintenance

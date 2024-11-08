@@ -1,0 +1,30 @@
+http:
+  services:
+    service1:
+      loadBalancer:
+        servers:
+          - url: "http://service1:8080/"
+    service2:
+      loadBalancer:
+        servers:
+          - url: "http://service2:8081/"
+  routers:
+    service1-router:
+      rule: "Host(`service1`)"
+      service: "service1"
+      middlewares:
+        - maintenance
+    service2-router:
+      rule: "Host(`service2`)"
+      service: "service2"
+      middlewares:
+        - maintenance
+  middlewares:
+    maintenance:
+      plugin:
+        traefik-maintenance:
+          enabled: true
+          filename: "/path/to/maintenance.html"
+          triggerFilename: "/path/to/maintenance.trigger"
+          httpResponseCode: 503
+          httpContentType: "text/html; charset=utf-8"
